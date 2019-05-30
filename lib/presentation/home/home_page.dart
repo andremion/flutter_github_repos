@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_github_repos/data/model/repos.dart';
-import 'package:flutter_github_repos/data/remote/repos_remote.dart';
-import 'package:flutter_github_repos/data/repository/repos_repository.dart';
+import 'package:flutter_github_repos/service_locator.dart';
 import 'package:provider/provider.dart';
 
 import 'home_view_model.dart';
@@ -13,7 +12,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _viewModel = HomeViewModel(ReposRepository(ReposRemoteDataSource())); // TODO: Dependency Injection here
+  final _viewModel = serviceLocator.get<HomeViewModel>();
 
   @override
   void initState() {

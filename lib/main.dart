@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_github_repos/presentation/home/home_page.dart';
+import 'package:flutter_github_repos/service_locator.dart';
 
-import 'presentation/home/home_page.dart';
-
-void main() => runApp(App());
+void main() {
+  setup();
+  runApp(App());
+}
 
 class App extends StatelessWidget {
   @override
