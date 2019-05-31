@@ -15,7 +15,7 @@ Map<String, dynamic> _$ErrorResponseToJson(ErrorResponse instance) =>
 
 FindReposResponse _$FindReposResponseFromJson(Map<String, dynamic> json) {
   return FindReposResponse(
-      total: json['total'] as int,
+      total: json['total_count'] as int,
       items: (json['items'] as List)
           ?.map((e) =>
               e == null ? null : RepoRemote.fromJson(e as Map<String, dynamic>))
@@ -23,7 +23,7 @@ FindReposResponse _$FindReposResponseFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$FindReposResponseToJson(FindReposResponse instance) =>
-    <String, dynamic>{'total': instance.total, 'items': instance.items};
+    <String, dynamic>{'total_count': instance.total, 'items': instance.items};
 
 RepoRemote _$RepoRemoteFromJson(Map<String, dynamic> json) {
   return RepoRemote(

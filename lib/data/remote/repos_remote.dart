@@ -18,7 +18,7 @@ class ReposRemoteDataSource {
       return FindReposResponse.fromJson(jsonMap);
     } else {
       final error = ErrorResponse.fromJson(jsonMap);
-      throw Exception('Failed to find repos: $error.message');
+      throw Exception('Failed to find repos: ${error.message}');
     }
   }
 }
@@ -34,6 +34,7 @@ class ErrorResponse {
 
 @JsonSerializable()
 class FindReposResponse {
+  @JsonKey(name: "total_count")
   final int total;
   final List<RepoRemote> items;
 
