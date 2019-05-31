@@ -10,73 +10,77 @@ class HomeViewModel extends BaseViewModel<HomeViewState> {
   HomeViewModel(this._repository);
 
   init() {
-    setState(HomeViewState(isLoading: true));
+    setState(HomeViewState(isInitialLoading: true));
     _loadInitialPage();
   }
 
   loadMore() {
-    if (state.isPaginating) return;
+    if (state.isLoadingMore) return;
     // Do not notify here. Just need to update the state in order to not request loading while it's current loading.
-    setState(state.copy(isPaginating: true), notify: false);
+    setState(state.copy(isLoadingMore: true), notify: false);
     _loadNextPage();
   }
 
   // Refresh needs to be a [Future] to show a better UX using a refresh indicator
   Future<void> refresh() async => _loadInitialPage();
 
+  clearError() => setState(state.copy(error: null), notify: false);
+
   _loadInitialPage() => _repository.findRepos().then(
         (paginatedList) => setState(state.copy(
-              isLoading: false,
+              isInitialLoading: false,
               repoList: paginatedList.items,
               hasNext: paginatedList.hasNext(),
+              error: null,
             )),
-        onError: (error) => setState(state.copy(isLoading: false, error: error)),
+        onError: (error) => setState(state.copy(isInitialLoading: false, error: error)),
       );
 
   _loadNextPage() => _repository.findRepos(fetchedItemCount: state.repoList.length ?? 0).then(
         (paginatedList) => setState(state.copy(
-              isPaginating: false,
+              isLoadingMore: false,
               repoList: List.from(state.repoList)..addAll(paginatedList.items),
               hasNext: paginatedList.hasNext(),
+              error: null,
             )),
-        onError: (error) => setState(state.copy(isPaginating: false, error: error)),
+        onError: (error) => setState(state.copy(isLoadingMore: false, error: error)),
       );
 }
 
 @immutable
 class HomeViewState {
-  final bool isLoading;
+  final bool isInitialLoading;
   final List<Repo> repoList;
   final bool hasNext;
-  final bool isPaginating;
+  final bool isLoadingMore;
   final Exception error;
 
   HomeViewState({
-    this.isLoading = false,
+    this.isInitialLoading = false,
     this.repoList = const [],
     this.hasNext = false,
-    this.isPaginating = false,
+    this.isLoadingMore = false,
     this.error,
   });
 
   // So many boilerplate to copy :/
   HomeViewState copy({
-    bool isLoading,
+    bool isInitialLoading,
     List<Repo> repoList,
     bool hasNext,
-    bool isPaginating,
+    bool isLoadingMore,
     Exception error,
   }) {
-    isLoading ??= this.isLoading;
+    isInitialLoading ??= this.isInitialLoading;
     repoList ??= this.repoList;
     hasNext ??= this.hasNext;
-    isPaginating ??= this.isPaginating;
+    isLoadingMore ??= this.isLoadingMore;
     error ??= this.error;
     return HomeViewState(
-      isLoading: isLoading,
+      isInitialLoading: isInitialLoading,
       repoList: repoList,
       hasNext: hasNext,
-      isPaginating: isPaginating,
+      isLoadingMore: isLoadingMore,
       error: error,
     );
   }

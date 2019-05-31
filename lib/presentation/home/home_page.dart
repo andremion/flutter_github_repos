@@ -20,11 +20,12 @@ class _HomePageState extends State<HomePage> {
     _viewModel.init();
   }
 
-  void _showSnackbar(error) {
+  void _showSnackbar() {
     WidgetsBinding.instance.addPostFrameCallback((duration) {
+      _viewModel.clearError(); // Clear error in order to not render error in next rendering because of Snackbar
       _scaffoldKey.currentState.hideCurrentSnackBar();
       _scaffoldKey.currentState.showSnackBar(SnackBar(
-        content: Text("$error"),
+        content: Text("${_viewModel.state.error}"),
         duration: Duration(seconds: 10),
         action: SnackBarAction(
           label: "OK", // TODO: Internationalization here
@@ -51,9 +52,9 @@ class _HomePageState extends State<HomePage> {
         child: Consumer<HomeViewModel>(
           builder: (context, model, child) {
             if (model.state.error != null) {
-              _showSnackbar(model.state.error);
+              _showSnackbar();
             }
-            if (model.state.isLoading) {
+            if (model.state.isInitialLoading) {
               return _renderLoading();
             }
             return _renderContent(model.state);
@@ -69,20 +70,30 @@ class _HomePageState extends State<HomePage> {
 
   Widget _renderContent(HomeViewState state) => RefreshIndicator(
         onRefresh: _onRefresh,
-        child: ListView.separated(
-          padding: const EdgeInsets.all(16.0),
-          separatorBuilder: (context, index) => Divider(),
-          itemCount: state.repoList.length + (state.hasNext ? 1 : 0),
-          itemBuilder: (context, i) {
-            if (i == state.repoList.length && state.hasNext) {
-              _viewModel.loadMore();
-              return _renderLoadingItem();
-            } else {
-              return _renderRepoItem(state.repoList[i]);
-            }
-          },
+        child: NotificationListener(
+          onNotification: _onScrollToBottom,
+          child: ListView.separated(
+            padding: const EdgeInsets.all(16.0),
+            separatorBuilder: (context, index) => Divider(),
+            itemCount: state.repoList.length + (state.hasNext ? 1 : 0),
+            itemBuilder: (context, i) {
+              if (i == state.repoList.length && state.hasNext) {
+                return _renderLoadingItem();
+              } else {
+                return _renderRepoItem(state.repoList[i]);
+              }
+            },
+          ),
         ),
       );
+
+  bool _onScrollToBottom(ScrollNotification scrollInfo) {
+    if (scrollInfo.metrics.pixels == scrollInfo.metrics.maxScrollExtent) {
+      _viewModel.loadMore();
+      return true;
+    }
+    return false;
+  }
 
   Widget _renderLoadingItem() => Center(
         child: CircularProgressIndicator(),
