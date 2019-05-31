@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter_github_repos/data/model/repos.dart';
 import 'package:flutter_github_repos/data/repository/repos_repository.dart';
 import 'package:flutter_github_repos/presentation/base_view_model.dart';
 import 'package:meta/meta.dart';

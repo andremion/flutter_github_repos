@@ -26,7 +26,7 @@ class ReposRemoteDataSource {
 class ErrorResponse {
   final String message;
 
-  const ErrorResponse(this.message);
+  ErrorResponse(this.message);
 
   factory ErrorResponse.fromJson(Map<String, dynamic> json) => _$ErrorResponseFromJson(json);
 }
@@ -36,7 +36,7 @@ class FindReposResponse {
   final int total;
   final List<RepoRemote> items;
 
-  const FindReposResponse({this.total, this.items});
+  FindReposResponse({this.total, this.items});
 
   factory FindReposResponse.fromJson(Map<String, dynamic> json) => _$FindReposResponseFromJson(json);
 }
@@ -47,7 +47,7 @@ class RepoRemote {
   final String description;
   final OwnerRemote owner;
 
-  const RepoRemote({this.name, this.description, this.owner});
+  RepoRemote({this.name, this.description, this.owner});
 
   factory RepoRemote.fromJson(Map<String, dynamic> json) => _$RepoRemoteFromJson(json);
 }
@@ -56,7 +56,7 @@ class RepoRemote {
 class OwnerRemote {
   final String login;
 
-  const OwnerRemote({this.login});
+  OwnerRemote({this.login});
 
   factory OwnerRemote.fromJson(Map<String, dynamic> json) => _$OwnerRemoteFromJson(json);
 }

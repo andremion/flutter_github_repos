@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_github_repos/data/model/repos.dart';
+import 'package:flutter_github_repos/data/repository/repos_repository.dart';
 import 'package:flutter_github_repos/service_locator.dart';
 import 'package:provider/provider.dart';
 
