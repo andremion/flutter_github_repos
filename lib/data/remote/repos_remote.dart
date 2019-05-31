@@ -2,11 +2,12 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:json_annotation/json_annotation.dart';
+import 'package:meta/meta.dart';
 
 part 'repos_remote.g.dart';
 
 class ReposRemoteDataSource {
-  Future<FindReposResponse> findRepos({page = 1, perPage = 10}) async {
+  Future<FindReposResponse> findRepos({page = 1, @required perPage}) async {
     final response = await http.get(
       'https://api.github.com/search/repositories?q=flutter&page=$page&per_page=$perPage',
       headers: {"": ""},
