@@ -3,6 +3,11 @@
 A simple Flutter application to start playing with Flutter.
 This app just shows Flutter repositories on GitHub paginating by 10 repos a time.
 
+Android|iOS
+-|-
+![Android](flutter_android_demo.gif)|![iOS](flutter_ios_demo.gif)
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
